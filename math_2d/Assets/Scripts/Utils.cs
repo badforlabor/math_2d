@@ -15,7 +15,7 @@ public static class Utils
     }
 
     // 世界坐标
-    public static List<Vector3> Cross2D(Vector3 p1, Vector3 p2, Vector3 circleCenter, float radius)
+    public static List<Vector3> Intersect2D(Vector3 p1, Vector3 p2, Vector3 circleCenter, float radius)
     {
         var ret = new List<Vector3>();
         /*

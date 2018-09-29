@@ -21,7 +21,7 @@ public class CrossLineCircle : MonoBehaviour {
     void OnDrawGizmos()
     {
         // 绘制交点
-        var cross = Utils.Cross2D(line.p0.position, line.p1.position, circle.transform.position, circle.Radius);
+        var cross = Utils.Intersect2D(line.p0.position, line.p1.position, circle.transform.position, circle.Radius);
         foreach (var it in cross)
         {
             Gizmos.DrawSphere(it, 0.1f);
