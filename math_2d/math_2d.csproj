@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Circle.cs" />
     <Compile Include="Assets\Scripts\CrossLineCircle.cs" />
+    <Compile Include="Assets\Scripts\CrossLineLine.cs" />
     <Compile Include="Assets\Scripts\Line.cs" />
     <Compile Include="Assets\Scripts\Utils.cs" />
   </ItemGroup>

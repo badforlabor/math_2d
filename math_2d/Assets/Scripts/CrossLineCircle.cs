@@ -20,6 +20,11 @@ public class CrossLineCircle : MonoBehaviour {
 
     void OnDrawGizmos()
     {
+        if (line == null || circle == null)
+        {
+            return;
+        }
+
         // 绘制交点
         var cross = Utils.Intersect2D(line.p0.position, line.p1.position, circle.transform.position, circle.Radius);
         foreach (var it in cross)
