@@ -107,4 +107,40 @@ public static class Utils
 
         return ret;
     }
+
+    // 世界坐标
+    public static bool IsIntersect(Vector3 circleCenter, float radius, Vector3 circleCenter1, float radius1)
+    {
+        return (circleCenter - circleCenter1).magnitude < (radius + radius1);
+    }
+    static float Sqr(float a)
+    {
+        return a * a;
+    }
+    public static List<Vector3> Intersect2D(Vector3 c0, float r0, Vector3 c1, float r1)
+    {
+        var ret = new List<Vector3>();
+
+        if (!IsIntersect(c0, r0, c1, r1))
+        {
+            return ret;
+        }
+        
+        var d = Mathf.Sqrt(Sqr(c1.x - c0.x) + Sqr(c1.y - c0.y));
+        var a = (Sqr(r0) - Sqr(r1) + Sqr(d)) / (2 * d);
+        var h = Mathf.Sqrt(Sqr(r0) - Sqr(a));
+
+        var x2 = c0.x + a * (c1.x - c0.x) / d;
+        var y2 = c0.y + a * (c1.y - c0.y) / d;
+
+        var x3 = x2 - h * (c1.y - c0.y) / d;
+        var y3 = y2 + h * (c1.x - c0.x) / d;
+        var x4 = x2 + h * (c1.y - c0.y) / d;
+        var y4 = y2 - h * (c1.x - c0.x) / d;
+
+        ret.Add(new Vector3(x3, y3, 0));
+        ret.Add(new Vector3(x4, y4, 0));
+
+        return ret;
+    }
 }
