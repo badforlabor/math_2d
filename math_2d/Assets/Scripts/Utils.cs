@@ -37,6 +37,12 @@ public static class Utils
         if (ceDist < radius)
         {
             var p1eDist = (E - p1).magnitude;
+
+            if (Vector3.Dot((E - p1), p1p2) < 0)
+            {
+                p1eDist *= -1;
+            }
+
             var dt = Mathf.Sqrt(radius * radius - ceDist * ceDist);
             ret.Add((p1eDist - dt) * p1p2Normal + p1);
             ret.Add((p1eDist + dt) * p1p2Normal + p1);
@@ -140,6 +146,96 @@ public static class Utils
 
         ret.Add(new Vector3(x3, y3, 0));
         ret.Add(new Vector3(x4, y4, 0));
+
+        return ret;
+    }
+    static float Cross2D(Vector3 a, Vector3 b)
+    {
+        a.z = 0;
+        b.z = 0;
+        return Vector3.Cross(a, b).z;
+    }
+    public static List<Vector3> IntersectSegment(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4)
+    {
+        var ret = new List<Vector3>();
+
+        var a = p2 - p1;
+        var b = p4 - p3;
+
+        var cross = Cross2D(a, b);
+        if (cross == 0)
+        {
+            // 平行的
+            return ret;
+        }
+
+        var t = Cross2D((p3 - p1), b) / cross;
+
+        if (t < 0 || t > 1)
+        {
+            // 不平行，但无焦点
+            return ret;
+        }
+
+        ret.Add(p1 + t * a);
+
+        return ret;
+    }
+    // 世界坐标
+    public static List<Vector3> SegmentCircle(Vector3 p1, Vector3 p2, Vector3 circleCenter, float radius)
+    {
+        var ret = new List<Vector3>();
+        /*
+         * 圆心到直线的投影点E，以及距离d，比较d和radius
+         *      d < radius：相交
+         *          左右两点与E的距离是：dt = sqrt(r*r-d*d)
+         *          所有左右两点是：(B-A).normal * ((E-A).mag +/- dt)
+         *      d == radius：相切
+         *          E点，就是交点
+         *      d > radius: 相离
+         *          无交点
+         */
+        var p1c = circleCenter - p1;
+        var p1p2 = p2 - p1;
+        var p1p2Normal = p1p2.normalized;
+        var Emag = Vector3.Dot(p1p2.normalized, p1c.normalized) * p1c.magnitude;
+        var E = p1 +  p1p2Normal * Emag;
+        var ce = E - circleCenter;
+        var ceDist = ce.magnitude;
+        if (ceDist < radius)
+        {
+            var p1eDist = (E - p1).magnitude;
+
+            if (Vector3.Dot((E - p1), p1p2) < 0)
+            {
+                p1eDist *= -1;
+            }
+
+            var dt = Mathf.Sqrt(radius * radius - ceDist * ceDist);
+            var p1p2mag = p1p2.magnitude;
+            var mag = (p1eDist - dt);
+            if (mag >= 0 && mag <= p1p2mag)
+            {
+                ret.Add(mag * p1p2Normal + p1);
+            }
+
+            mag = (p1eDist + dt);
+            if (mag >= 0 && mag <= p1p2mag)
+            {
+                ret.Add(mag * p1p2Normal + p1);
+            }
+        }
+        else if (ceDist == radius)
+        {
+            if (Emag >= 0 && Emag <= 1)
+            {
+                ret.Add(E);
+            }
+        }
+        else
+        {
+
+        }
 
         return ret;
     }
