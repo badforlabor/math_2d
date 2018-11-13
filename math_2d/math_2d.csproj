@@ -81,10 +81,12 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Circle.cs" />
     <Compile Include="Assets\Scripts\CrossCircleCircle.cs" />
+    <Compile Include="Assets\Scripts\CrossCircleRectangle.cs" />
     <Compile Include="Assets\Scripts\CrossLineCircle.cs" />
     <Compile Include="Assets\Scripts\CrossLineLine.cs" />
     <Compile Include="Assets\Scripts\CrossSegmentSegment.cs" />
     <Compile Include="Assets\Scripts\Line.cs" />
+    <Compile Include="Assets\Scripts\Rectangle.cs" />
     <Compile Include="Assets\Scripts\Utils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
